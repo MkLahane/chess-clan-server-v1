@@ -35,15 +35,17 @@ export class UserResolver {
   @Query(() => User)
   @UseMiddleware(isAuth)
   getUser(@Ctx() { payload }: UserContext) {
-    return User.findOne(payload!.userId, { relations: ["clan", "clanUser"] });
+    return User.findOne(payload!.userId, {
+      relations: ["clan", "clanUser"],
+    });
   }
   @Query(() => [User])
-  getUsers() {
-    return User.find();
+  async getUsers() {
+    return await User.find({ relations: ["clan", "clanUser"] });
   }
   @Mutation(() => Boolean)
   async register(
-    @Arg("email") name: string,
+    @Arg("name") name: string,
     @Arg("username") username: string,
     @Arg("email") email: string,
     @Arg("password") password: string

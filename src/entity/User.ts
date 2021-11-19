@@ -36,14 +36,18 @@ export class User extends BaseEntity {
   @Column("int", { default: 400 })
   rating: number;
 
-  @Field(() => Clan)
-  @OneToOne(() => Clan)
-  @JoinColumn()
+  @Field(() => Clan, { nullable: true })
+  @OneToOne(() => Clan, { nullable: true, cascade: true })
+  @JoinColumn({ name: "clan_id", referencedColumnName: "id" })
   clan: Clan;
 
-  @Field(() => ClanUser)
-  @OneToOne(() => ClanUser)
-  @JoinColumn()
+  @Field(() => ClanUser, { nullable: true })
+  @OneToOne(() => ClanUser, {
+    nullable: true,
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "clan_user_id", referencedColumnName: "id" })
   clanUser: ClanUser;
 
   @Column("int", { default: 0 })

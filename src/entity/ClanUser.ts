@@ -3,12 +3,11 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   OneToOne,
-  JoinColumn,
   Column,
+  JoinTable,
 } from "typeorm";
 import { Field, Int, ObjectType } from "type-graphql";
 import { User } from "./User";
-import { Clan } from "./Clan";
 
 export enum UserRoles {
   ADMIN = "admin",
@@ -26,13 +25,17 @@ export class ClanUser extends BaseEntity {
   @Column("text")
   userRole: UserRoles;
 
-  @Field(() => User)
   @OneToOne(() => User)
-  @JoinColumn()
+  @JoinTable({
+    name: "clan_user", // table name for the junction table of this relation
+    joinColumn: {
+      name: "clan",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "user",
+      referencedColumnName: "id",
+    },
+  })
   user: User;
-
-  @Field(() => Clan)
-  @OneToOne(() => Clan)
-  @JoinColumn()
-  clan: Clan;
 }
