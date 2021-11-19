@@ -5,6 +5,7 @@ import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { buildSchema } from "type-graphql";
 import { UserResolver } from "./resolvers/user-resolver";
+import { ClanResolver } from "./resolvers/clan-resolver";
 import { UserContext } from "./contexts/user-context";
 import { verify } from "jsonwebtoken";
 import { User } from "./entity/User";
@@ -50,7 +51,7 @@ import {
   });
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver],
+      resolvers: [UserResolver, ClanResolver],
     }),
     context: ({ req, res }: UserContext) => ({ req, res }),
   });

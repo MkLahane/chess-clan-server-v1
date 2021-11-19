@@ -4,8 +4,6 @@ import {
   Column,
   BaseEntity,
   OneToMany,
-  OneToOne,
-  JoinColumn,
 } from "typeorm";
 import { Field, Int, ObjectType } from "type-graphql";
 import { User } from "./User";
@@ -25,10 +23,7 @@ export class Clan extends BaseEntity {
   @Column({ default: 0 })
   ranking: number;
 
-  @OneToOne(() => User)
-  @JoinColumn()
-  admin: User;
-
-  @OneToMany(() => User, (user) => user)
+  @Field(() => [User])
+  @OneToMany(() => User, (user) => user.clan)
   users: User[];
 }

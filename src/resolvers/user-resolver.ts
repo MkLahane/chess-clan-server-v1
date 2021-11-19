@@ -35,7 +35,7 @@ export class UserResolver {
   @Query(() => User)
   @UseMiddleware(isAuth)
   getUser(@Ctx() { payload }: UserContext) {
-    return User.findOne(payload!.userId);
+    return User.findOne(payload!.userId, { relations: ["clan", "clanUser"] });
   }
   @Query(() => [User])
   getUsers() {

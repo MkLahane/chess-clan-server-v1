@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { Field, Int, ObjectType } from "type-graphql";
 import { Clan } from "./Clan";
+import { ClanUser } from "./ClanUser";
 
 @ObjectType()
 @Entity("users")
@@ -35,9 +36,15 @@ export class User extends BaseEntity {
   @Column("int", { default: 400 })
   rating: number;
 
+  @Field(() => Clan)
   @OneToOne(() => Clan)
   @JoinColumn()
   clan: Clan;
+
+  @Field(() => ClanUser)
+  @OneToOne(() => ClanUser)
+  @JoinColumn()
+  clanUser: ClanUser;
 
   @Column("int", { default: 0 })
   tokenVersion: number;
