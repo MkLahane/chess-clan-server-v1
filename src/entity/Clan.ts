@@ -3,10 +3,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  OneToMany,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
 import { Field, Int, ObjectType } from "type-graphql";
-import { User } from "./User";
+import { ClanUser } from "./ClanUser";
 
 @ObjectType()
 @Entity("clans")
@@ -23,7 +24,20 @@ export class Clan extends BaseEntity {
   @Column({ default: 0 })
   ranking: number;
 
-  @Field(() => [User])
-  @OneToMany(() => User, (user) => user.clan)
-  users: User[];
+  @ManyToMany(() => ClanUser)
+  @JoinTable({ name: "joint_clan_users" })
+  clanUsers: ClanUser[];
 }
+
+// @JoinTable({
+//     name: "clan_user", // table name for the junction table of this relation
+//     joinColumn: {
+//       name: "clan",
+//       referencedColumnName: "id",
+//     },
+//     inverseJoinColumn: {
+//       name: "user",
+//       referencedColumnName: "id",
+//     },
+//   })
+//   user: User;
