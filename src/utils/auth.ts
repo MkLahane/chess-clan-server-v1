@@ -5,7 +5,7 @@ import { UserContext } from "../contexts/user-context";
 export const isAuth: MiddlewareFn<UserContext> = ({ context }, next) => {
   const authorization = context.req.headers["authorization"];
   if (!authorization) {
-    throw new Error("User not logged in");
+    throw new Error("Auth header not provided");
   }
   try {
     const token = authorization.split(" ")[1];

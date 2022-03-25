@@ -14,10 +14,19 @@ import {
   createRefreshToken,
   sendRefreshToken,
 } from "./utils/token";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
 (async () => {
   await createConnection();
   const app = express();
+  app.use(
+    cors({
+      credentials: true,
+      origin: "http://localhost:3000",
+    })
+  );
+  app.use(cookieParser());
   app.get("/", (_, res) => res.send("hello"));
   app.post("/refresh_token", async (req, res) => {
     const token = req.cookies.jid;
@@ -29,14 +38,12 @@ import {
     try {
       payload = verify(token, process.env.REFRESH_TOKEN_SECRET!);
     } catch (err) {
-      console.log(err);
       return res.send({ ok: false, accessToken: "" });
     }
 
     // token is valid and
     // we can send back an access token
     const user = await User.findOne({ id: payload.userId });
-
     if (!user) {
       return res.send({ ok: false, accessToken: "" });
     }
@@ -55,10 +62,9 @@ import {
     }),
     context: ({ req, res }: UserContext) => ({ req, res }),
   });
-  await apolloServer.start();
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({ app, cors: false });
 
-  app.listen(3000, () => {
-    console.log("express server started");
+  app.listen(8000, () => {
+    console.log(`express server started`);
   });
 })();

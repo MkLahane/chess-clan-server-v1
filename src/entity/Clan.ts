@@ -28,16 +28,3 @@ export class Clan extends BaseEntity {
   @JoinTable({ name: "joint_clan_users" })
   clanUsers: ClanUser[];
 }
-
-// @JoinTable({
-//     name: "clan_user", // table name for the junction table of this relation
-//     joinColumn: {
-//       name: "clan",
-//       referencedColumnName: "id",
-//     },
-//     inverseJoinColumn: {
-//       name: "user",
-//       referencedColumnName: "id",
-//     },
-//   })
-//   user: User;
